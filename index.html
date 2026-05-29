@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Record System</title>
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body{
+      background: linear-gradient(180deg, #e9f2ff 0%, #f7fbff 100%);
+      padding:30px;
+    }
+
+    .container{
+      max-width:940px;
+      margin:auto;
+      background:#ffffff;
+      padding:32px;
+      border-radius:24px;
+      box-shadow:0 16px 40px rgba(13, 71, 161, 0.12);
+      border:1px solid rgba(13, 71, 161, 0.08);
+    }
+
+    .header{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:18px;
+      margin-bottom:28px;
+      flex-wrap:wrap;
+      background: rgba(13, 71, 161, 0.05);
+      padding:18px 20px;
+      border-radius:20px;
+      border:1px solid rgba(13, 71, 161, 0.12);
+    }
+
+    .logo{
+      width:76px;
+      height:auto;
+      border-radius:16px;
+      box-shadow:0 8px 24px rgba(13, 71, 161, 0.12);
+      background:#fff;
+    }
+
+    h1{
+      text-align:center;
+      margin:0;
+      color:#0d47a1;
+      font-size:2rem;
+      letter-spacing:0.01em;
+    }
+
+    .search-box{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:22px;
+    }
+
+    .search-box input,
+    .add-box input,
+    .add-box textarea{
+      flex:1;
+      padding:14px 16px;
+      border:1px solid rgba(13, 71, 161, 0.18);
+      border-radius:14px;
+      font-size:15px;
+      background:#f6fbff;
+      color:#163d63;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .search-box input:focus,
+    .add-box input:focus,
+    .add-box textarea:focus{
+      outline:none;
+      border-color:#0d47a1;
+      box-shadow:0 0 0 4px rgba(13, 71, 161, 0.08);
+    }
+
+    .search-box button{
+      padding:14px 28px;
+      border:none;
+      background:#1e88e5;
+      color:#fff;
+      border-radius:14px;
+      cursor:pointer;
+      font-size:15px;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .search-box button:hover{
+      background:#1565c0;
+      transform: translateY(-1px);
+    }
+
+    .section-box{
+      margin-bottom:30px;
+      padding:24px;
+      background:#f3f8ff;
+      border:1px solid rgba(13, 71, 161, 0.12);
+      border-radius:20px;
+    }
+
+    .section-box h2{
+      margin-bottom:20px;
+      color:#0d47a1;
+      font-size:1.4rem;
+    }
+
+    .add-box{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+      margin-bottom:25px;
+    }
+
+    @media (max-width:768px) {
+      .container{
+        padding:20px;
+      }
+
+      .search-box,
+      .add-box {
+        grid-template-columns:1fr;
+        display:block;
+      }
+
+      .search-box input,
+      .search-box button,
+      .add-box input,
+      .add-box textarea,
+      .add-box button {
+        width:100%;
+      }
+
+      .search-box input,
+      .add-box input,
+      .add-box textarea {
+        margin-bottom:10px;
+      }
+
+      .card-actions {
+        flex-direction:column;
+      }
+    }
+
+    .add-box input,
+    .add-box textarea{
+      padding:12px;
+      border:1px solid #ccc;
+      border-radius:8px;
+      font-size:16px;
+      width:100%;
+    }
+
+    .add-box textarea{
+      resize:vertical;
+      min-height:80px;
+    }
+
+    .add-box input[type="file"]{
+      padding:12px 10px;
+      border:1px solid #ccc;
+      border-radius:8px;
+      font-size:16px;
+      width:100%;
+      background:#fff;
+    }
+
+    .student-photo{
+      width:140px;
+      height:140px;
+      object-fit:cover;
+      border-radius:14px;
+      border:1px solid #ddd;
+      display:none;
+      margin-bottom:15px;
+    }
+
+    .add-box button{
+      grid-column:1 / -1;
+      padding:12px 25px;
+      border:none;
+      background:#2e7d32;
+      color:#fff;
+      border-radius:8px;
+      cursor:pointer;
+      font-size:16px;
+    }
+
+    .add-box button:hover{
+      background:#388e3c;
+    }
+
+    .card-actions{
+      margin-top:20px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .card-actions button{
+      padding:10px 18px;
+      border:none;
+      border-radius:8px;
+      cursor:pointer;
+      font-size:15px;
+      color:#fff;
+    }
+
+    .card-actions button.edit{
+      background:#1976d2;
+    }
+
+    .card-actions button.delete{
+      background:#d32f2f;
+    }
+
+    .card-actions button.cancel{
+      background:#757575;
+    }
+
+    .student-card{
+      display:none;
+      border:2px solid #0d47a1;
+      border-radius:12px;
+      padding:25px;
+      background:#f9fbff;
+    }
+
+    .student-card h2{
+      margin-bottom:15px;
+      color:#0d47a1;
+    }
+
+    .detail{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:15px;
+    }
+
+    .detail div{
+      background:#fff;
+      padding:12px;
+      border-radius:8px;
+      border:1px solid #ddd;
+    }
+
+    .not-found{
+      text-align:center;
+      color:red;
+      margin-top:20px;
+      font-size:18px;
+      display:none;
+    }
+
+    @media(max-width:600px){
+      .detail{
+        grid-template-columns:1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <div class="header">
+      <img src="logo.png" alt="BDS Public School Logo" class="logo">
+      <h1>BDS PUBLIC SCHOOL Student Details</h1>
+    </div>
+
+    <div class="section-box">
+      <h2>Search Student</h2>
+      <div class="search-box">
+        <input type="text" id="name" placeholder="Enter Student Name">
+        <input type="text" id="roll" placeholder="Enter Roll Number">
+        <input type="text" id="class" placeholder="Enter Class">
+        <input type="text" id="section" placeholder="Enter Section">
+        <button onclick="searchStudent()">Search</button>
+      </div>
+    </div>
+
+    <div class="section-box">
+      <h2>Add Student</h2>
+      <div class="add-box">
+      <input type="text" id="addName" placeholder="Student Name">
+      <input type="text" id="addRoll" placeholder="Roll Number">
+      <input type="text" id="addClass" placeholder="Class">
+      <input type="text" id="addSection" placeholder="Section">
+      <input type="date" id="addDob" placeholder="DOB">
+      <input type="file" id="addPhoto" accept="image/*">
+      <input type="text" id="addFather" placeholder="Father Name">
+      <input type="text" id="addMother" placeholder="Mother Name">
+      <input type="text" id="addMobile" placeholder="Mobile Number">
+      <textarea id="addAddress" placeholder="Address"></textarea>
+      <button id="addButton" onclick="addStudent()">Add Student</button>
+      <button id="updateButton" style="display:none; background:#1976d2;" onclick="updateStudent()">Update Student</button>
+      <button id="cancelEditButton" style="display:none; background:#757575;" onclick="cancelEdit()">Cancel</button>
+    </div>
+
+    <div class="student-card" id="studentCard">
+      <h2>Student Details</h2>
+      <img id="sphoto" class="student-photo" alt="Student Photo">
+
+      <div class="detail">
+        <div><b>Name:</b> <span id="sname"></span></div>
+        <div><b>Roll No:</b> <span id="sroll"></span></div>
+        <div><b>Class:</b> <span id="sclass"></span></div>
+        <div><b>Section:</b> <span id="ssection"></span></div>
+        <div><b>DOB:</b> <span id="sdob"></span></div>
+        <div><b>Father Name:</b> <span id="sfather"></span></div>
+        <div><b>Mother Name:</b> <span id="smother"></span></div>
+        <div><b>Mobile:</b> <span id="smobile"></span></div>
+        <div><b>Address:</b> <span id="saddress"></span></div>
+      </div>
+      <div class="card-actions">
+        <button class="edit" onclick="prepareEditStudent()">Edit Student</button>
+        <button class="delete" onclick="deleteStudent()">Delete Student</button>
+      </div>
+    </div>
+
+    <div class="not-found" id="notFound">
+      Student Record Not Found
+    </div>
+
+  </div>
+
+  <script>
+    // Student Database with localStorage persistence
+    const STUDENT_STORAGE_KEY = 'studentDatabase';
+
+    const defaultStudents = [
+      {
+        name: "Rahul Kumar",
+        roll: "101",
+        class: "10",
+        section: "A",
+        dob: "2008-04-15",
+        father: "Ramesh Kumar",
+        mother: "Sita Devi",
+        mobile: "9876543210",
+        address: "Patna, Bihar"
+      },
+
+      {
+        name: "Aman Singh",
+        roll: "102",
+        class: "9",
+        section: "B",
+        dob: "2009-11-02",
+        father: "Mahesh Singh",
+        mother: "Pooja Devi",
+        mobile: "9123456780",
+        address: "Ara, Bihar"
+      },
+
+      {
+        name: "Priya Sharma",
+        roll: "103",
+        class: "8",
+        section: "C",
+        dob: "2009-05-12",
+        father: "Sanjay Sharma",
+        mother: "Kiran Sharma",
+        mobile: "9988776655",
+        address: "Buxar, Bihar"
+      }
+    ];
+
+    let students = loadStudents();
+    let currentStudentIndex = -1;
+    let isEditing = false;
+
+    function loadStudents() {
+      try {
+        const saved = localStorage.getItem(STUDENT_STORAGE_KEY);
+        if (saved) {
+          return JSON.parse(saved);
+        }
+      } catch (error) {
+        console.warn('Unable to load students from localStorage:', error);
+      }
+      saveStudents(defaultStudents);
+      return [...defaultStudents];
+    }
+
+    function saveStudents(data = students) {
+      try {
+        localStorage.setItem(STUDENT_STORAGE_KEY, JSON.stringify(data));
+      } catch (error) {
+        console.warn('Unable to save students to localStorage:', error);
+      }
+    }
+
+    function prepareEditStudent() {
+      if (currentStudentIndex === -1) {
+        return;
+      }
+      const student = students[currentStudentIndex];
+      document.getElementById("addName").value = student.name;
+      document.getElementById("addRoll").value = student.roll;
+      document.getElementById("addClass").value = student.class;
+      document.getElementById("addSection").value = student.section;
+      document.getElementById("addDob").value = student.dob;
+      document.getElementById("addFather").value = student.father;
+      document.getElementById("addMother").value = student.mother;
+      document.getElementById("addMobile").value = student.mobile;
+      document.getElementById("addAddress").value = student.address;
+      document.getElementById("addPhoto").value = "";
+
+      isEditing = true;
+      document.getElementById("addButton").style.display = "none";
+      document.getElementById("updateButton").style.display = "inline-block";
+      document.getElementById("cancelEditButton").style.display = "inline-block";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function cancelEdit() {
+      isEditing = false;
+      currentStudentIndex = -1;
+      document.getElementById("addButton").style.display = "inline-block";
+      document.getElementById("updateButton").style.display = "none";
+      document.getElementById("cancelEditButton").style.display = "none";
+      document.getElementById("addName").value = "";
+      document.getElementById("addRoll").value = "";
+      document.getElementById("addClass").value = "";
+      document.getElementById("addSection").value = "";
+      document.getElementById("addDob").value = "";
+      document.getElementById("addPhoto").value = "";
+      document.getElementById("addFather").value = "";
+      document.getElementById("addMother").value = "";
+      document.getElementById("addMobile").value = "";
+      document.getElementById("addAddress").value = "";
+    }
+
+    function updateStudent() {
+      if (currentStudentIndex === -1) {
+        return;
+      }
+      const photoInput = document.getElementById("addPhoto");
+      const photoFile = photoInput.files[0];
+      const updatedStudent = {
+        name: document.getElementById("addName").value.trim(),
+        roll: document.getElementById("addRoll").value.trim(),
+        class: document.getElementById("addClass").value.trim(),
+        section: document.getElementById("addSection").value.trim().toUpperCase(),
+        dob: document.getElementById("addDob").value,
+        father: document.getElementById("addFather").value.trim(),
+        mother: document.getElementById("addMother").value.trim(),
+        mobile: document.getElementById("addMobile").value.trim(),
+        address: document.getElementById("addAddress").value.trim()
+      };
+
+      if (!updatedStudent.name || !updatedStudent.roll || !updatedStudent.class || !updatedStudent.section || !updatedStudent.dob) {
+        alert("Please fill in Name, Roll, Class, Section, and DOB.");
+        return;
+      }
+
+      const duplicateRoll = students.some((student, index) => index !== currentStudentIndex && student.roll === updatedStudent.roll);
+      if (duplicateRoll) {
+        alert("Another student with this roll number already exists.");
+        return;
+      }
+
+      const saveUpdate = (photoData) => {
+        updatedStudent.photo = photoData || students[currentStudentIndex].photo;
+        students[currentStudentIndex] = updatedStudent;
+        saveStudents();
+        alert("Student updated successfully!");
+        cancelEdit();
+        searchStudent();
+      };
+
+      if (photoFile) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          saveUpdate(event.target.result);
+        };
+        reader.readAsDataURL(photoFile);
+      } else {
+        saveUpdate();
+      }
+    }
+
+    function deleteStudent() {
+      if (currentStudentIndex === -1) {
+        return;
+      }
+      const confirmDelete = confirm("Are you sure you want to delete this student?");
+      if (!confirmDelete) {
+        return;
+      }
+      students.splice(currentStudentIndex, 1);
+      saveStudents();
+      currentStudentIndex = -1;
+      document.getElementById("studentCard").style.display = "none";
+      document.getElementById("notFound").style.display = "block";
+      if (isEditing) cancelEdit();
+    }
+
+    function searchStudent(){
+
+      const nameInput = document.getElementById("name").value.toLowerCase().trim();
+      const rollInput = document.getElementById("roll").value.toLowerCase().trim();
+      const classInput = document.getElementById("class").value.toLowerCase().trim();
+      const sectionInput = document.getElementById("section").value.toLowerCase().trim();
+
+      currentStudentIndex = students.findIndex(s => 
+        s.name.toLowerCase() === nameInput &&
+        s.roll.toLowerCase() === rollInput &&
+        s.class.toLowerCase() === classInput &&
+        s.section.toLowerCase() === sectionInput
+      );
+      const student = currentStudentIndex !== -1 ? students[currentStudentIndex] : null;
+
+      if(student){
+
+        document.getElementById("studentCard").style.display = "block";
+        document.getElementById("notFound").style.display = "none";
+
+        document.getElementById("sname").innerText = student.name;
+        document.getElementById("sroll").innerText = student.roll;
+        document.getElementById("sclass").innerText = student.class;
+        document.getElementById("ssection").innerText = student.section;
+        document.getElementById("sdob").innerText = student.dob || "";
+        document.getElementById("sphoto").src = student.photo || "";
+        document.getElementById("sphoto").style.display = student.photo ? "block" : "none";
+        document.getElementById("sfather").innerText = student.father;
+        document.getElementById("smother").innerText = student.mother;
+        document.getElementById("smobile").innerText = student.mobile;
+        document.getElementById("saddress").innerText = student.address;
+
+      } else {
+
+        document.getElementById("studentCard").style.display = "none";
+        document.getElementById("notFound").style.display = "block";
+      }
+    }
+
+    function addStudent() {
+      const photoInput = document.getElementById("addPhoto");
+      const photoFile = photoInput.files[0];
+      const newStudent = {
+        name: document.getElementById("addName").value.trim(),
+        roll: document.getElementById("addRoll").value.trim(),
+        class: document.getElementById("addClass").value.trim(),
+        section: document.getElementById("addSection").value.trim().toUpperCase(),
+        dob: document.getElementById("addDob").value,
+        father: document.getElementById("addFather").value.trim(),
+        mother: document.getElementById("addMother").value.trim(),
+        mobile: document.getElementById("addMobile").value.trim(),
+        address: document.getElementById("addAddress").value.trim()
+      };
+
+      if (!newStudent.name || !newStudent.roll || !newStudent.class || !newStudent.section || !newStudent.dob) {
+        alert("Please fill in Name, Roll, Class, Section, and DOB.");
+        return;
+      }
+
+      if (!photoFile) {
+        alert("Please upload a student photo.");
+        return;
+      }
+
+      const exists = students.some(s => s.roll === newStudent.roll);
+      if (exists) {
+        alert("Student with this roll number already exists.");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        newStudent.photo = event.target.result;
+        students.push(newStudent);
+        saveStudents();
+        alert("Student added successfully!");
+
+        document.getElementById("addName").value = "";
+        document.getElementById("addRoll").value = "";
+        document.getElementById("addClass").value = "";
+        document.getElementById("addSection").value = "";
+        document.getElementById("addDob").value = "";
+        photoInput.value = "";
+        document.getElementById("addFather").value = "";
+        document.getElementById("addMother").value = "";
+        document.getElementById("addMobile").value = "";
+        document.getElementById("addAddress").value = "";
+      };
+      reader.readAsDataURL(photoFile);
+    }
+  </script>
+
+</body>
+</html>
