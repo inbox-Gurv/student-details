@@ -258,29 +258,12 @@
       <h1>Class-wise Student List</h1>
       <div>
         <a href="index.html" class="back-link">Back to Main Page</a>
-        <button class="logout-button" onclick="logout()">Logout</button>
       </div>
     </div>
     <div id="content"></div>
   </div>
   <script>
     const API_BASE = '/api/students';
-    const AUTH_KEY = 'studentAppAuth';
-
-    function isLoggedIn() {
-      return !!localStorage.getItem(AUTH_KEY);
-    }
-
-    function requireAuth() {
-      if (!isLoggedIn()) {
-        window.location.href = 'login.html';
-      }
-    }
-
-    function logout() {
-      localStorage.removeItem(AUTH_KEY);
-      window.location.href = 'login.html';
-    }
 
     function groupByClass(students) {
       return students.reduce((groups, student) => {
@@ -314,7 +297,6 @@
     }
 
     async function renderClassWise() {
-      requireAuth();
       const content = document.getElementById('content');
       await loadStudents();
       if (!students.length) {
@@ -490,7 +472,6 @@
       return String(text || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
     }
 
-    requireAuth();
     renderClassWise();
   </script>
 </body>

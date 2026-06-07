@@ -328,7 +328,6 @@
     <div class="header">
       <img src="logo.png" alt="BDS Public School Logo" class="logo">
       <h1>BDS PUBLIC SCHOOL Student Details</h1>
-      <button class="logout-button" onclick="logout()">Logout</button>
     </div>
 
     <div class="section-box">
@@ -391,7 +390,6 @@
   <script>
     // Client-side code that syncs with backend API when available
     const STUDENT_STORAGE_KEY = 'studentDatabase';
-    const AUTH_KEY = 'studentAppAuth';
     const API_BASE = '/api/students';
 
     let students = [];
@@ -399,23 +397,7 @@
     let isEditing = false;
     let currentEditingRoll = null;
 
-    function isLoggedIn() {
-      return !!localStorage.getItem(AUTH_KEY);
-    }
-
-    function requireAuth() {
-      if (!isLoggedIn()) {
-        window.location.href = 'login.html';
-      }
-    }
-
-    function logout() {
-      localStorage.removeItem(AUTH_KEY);
-      window.location.href = 'login.html';
-    }
-
     async function loadStudents() {
-      requireAuth();
       try {
         const res = await fetch(API_BASE);
         if (res.ok) {
@@ -682,7 +664,6 @@
     }
 
     // initialize
-    requireAuth();
     loadStudents();
   </script>
 

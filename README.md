@@ -21,14 +21,11 @@ npm start
 
 - http://<laptop-ip>:3000
 
-5. Login credentials:
+5. Login is not required.
 
-- Username: `admin`
-- Password: `admin123`
+- The app now starts directly on the main page at `http://localhost:3000`.
 
-The app now starts at the login page and redirects to `index.html` after successful login.
-
-6. On other devices: use the same login credentials after opening the site.
+6. On other devices: open the same URL on the same LAN.
 
 - http://<laptop-ip>:3000
 
