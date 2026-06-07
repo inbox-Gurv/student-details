@@ -51,7 +51,7 @@
   ],
   "auth": {
     "username": "admin",
-    "password": "admin123",
+    "password": "newpass123",
     "recoveryCode": "studentreset"
   }
 }
