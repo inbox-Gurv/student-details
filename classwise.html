@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Class-wise Students</title>
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family: Arial, sans-serif;
+    }
+    body{
+      background: linear-gradient(180deg, #e9f2ff 0%, #f7fbff 100%);
+      padding:30px;
+    }
+    .container{
+      max-width:960px;
+      margin:auto;
+      background:#ffffff;
+      padding:32px;
+      border-radius:24px;
+      box-shadow:0 16px 40px rgba(13, 71, 161, 0.12);
+      border:1px solid rgba(13, 71, 161, 0.08);
+    }
+    .header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+      margin-bottom:24px;
+    }
+
+    .logout-button{
+      padding:12px 18px;
+      border:none;
+      background:#d32f2f;
+      color:#fff;
+      border-radius:14px;
+      cursor:pointer;
+      font-size:15px;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .logout-button:hover{
+      background:#b71c1c;
+      transform: translateY(-1px);
+    }
+    .header h1{
+      font-size:1.9rem;
+      color:#0d47a1;
+    }
+    .back-link{
+      padding:12px 18px;
+      background:#1e88e5;
+      color:#fff;
+      border:none;
+      border-radius:14px;
+      text-decoration:none;
+      font-size:0.95rem;
+    }
+    .back-link:hover{
+      background:#1565c0;
+    }
+    .class-section{
+      margin-bottom:24px;
+      border:1px solid rgba(13, 71, 161, 0.12);
+      border-radius:18px;
+      background:#f3f8ff;
+      padding:20px;
+    }
+    .class-section h2{
+      margin-bottom:14px;
+      color:#0d47a1;
+      font-size:1.4rem;
+    }
+    .student-list{
+      display:grid;
+      gap:12px;
+    }
+    .student-row{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      width:100%;
+    }
+    .student-card{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:10px;
+      padding:14px 16px;
+      border-radius:12px;
+      background:#fff;
+      border:1px solid rgba(13, 71, 161, 0.12);
+      transition: background 0.2s ease, transform 0.2s ease;
+      flex:0 0 220px;
+    }
+    .student-card:hover{
+      background:#eef5ff;
+      transform: translateY(-1px);
+    }
+    .student-avatar{
+      width:96px;
+      height:96px;
+      border-radius:8px;
+      object-fit:cover;
+      border:4px solid rgba(13, 71, 161, 0.18);
+      margin-right:16px;
+      flex-shrink:0;
+    }
+    .student-card.active{
+      background:#e3f2fd;
+      border-color:#1976d2;
+    }
+    .student-card span{
+      color:#163d63;
+      font-size:0.95rem;
+    }
+    .student-card strong{
+      color:#0d47a1;
+    }
+    .student-name{
+      color:#0d47a1;
+      font-weight:700;
+      cursor:pointer;
+      text-decoration:underline;
+    }
+    .student-name:hover{
+      color:#1565c0;
+    }
+    .student-details{
+      margin-top:8px;
+      padding:14px 16px;
+      border-radius:12px;
+      background:#f1f8ff;
+      border:1px solid rgba(13, 71, 161, 0.12);
+      display:none;
+      color:#163d63;
+      line-height:1.5;
+      flex:1 1 auto;
+    }
+
+    .student-row .student-details{
+      margin-top:0;
+    }
+    .student-details div{
+      margin-bottom:8px;
+    }
+    .student-details label{
+      display:block;
+      margin-bottom:6px;
+      font-size:0.95rem;
+      color:#124080;
+    }
+    .student-details input,
+    .student-details textarea{
+      width:100%;
+      padding:10px 12px;
+      border:1px solid rgba(13, 71, 161, 0.2);
+      border-radius:10px;
+      background:#fff;
+      color:#163d63;
+      font-size:0.95rem;
+      box-sizing:border-box;
+    }
+    .student-details textarea{
+      min-height:90px;
+      resize:vertical;
+    }
+    .edit-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+    .student-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:12px;
+    }
+    .student-actions button{
+      padding:10px 16px;
+      border:none;
+      border-radius:10px;
+      cursor:pointer;
+      font-size:0.95rem;
+      color:#fff;
+    }
+    .student-actions-inline{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      margin-left:auto;
+    }
+    .student-actions-inline button{
+      padding:8px 12px;
+      font-size:0.85rem;
+    }
+    .student-actions button.edit{
+      background:#1976d2;
+    }
+    .student-actions button.delete{
+      background:#d32f2f;
+    }
+    .student-actions button.save{
+      background:#2e7d32;
+    }
+    .student-actions button.cancel{
+      background:#757575;
+    }
+    .empty-message,
+    .no-data{
+      color:#555;
+      font-size:1rem;
+      padding:14px 16px;
+      background:#fff;
+      border-radius:12px;
+      border:1px solid rgba(13, 71, 161, 0.08);
+    }
+    @media (max-width:768px) {
+      .header{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+      .student-row{
+        flex-direction:column;
+      }
+      .student-row .student-details{
+        margin-top:8px;
+      }
+      .student-card{
+        flex-direction:row;
+        align-items:center;
+        width:100%;
+        flex:1 1 auto;
+      }
+    }
+
+    @media (max-width:480px) {
+      .container{ padding:16px; }
+      .student-card{ flex-direction:column; align-items:flex-start; padding:12px; gap:8px; flex:1 1 auto; }
+      .student-avatar{ width:84px; height:84px; margin-right:10px; border-width:3px; }
+      .student-card span{ display:block; width:100%; }
+      .student-details{ padding:12px; font-size:0.95rem; }
+      .edit-grid{ grid-template-columns:1fr; }
+      .student-actions{ flex-direction:column; gap:8px; }
+      .student-actions button{ width:100%; padding:10px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Class-wise Student List</h1>
+      <div>
+        <a href="index.html" class="back-link">Back to Main Page</a>
+        <button class="logout-button" onclick="logout()">Logout</button>
+      </div>
+    </div>
+    <div id="content"></div>
+  </div>
+  <script>
+    const API_BASE = '/api/students';
+    const AUTH_KEY = 'studentAppAuth';
+
+    function isLoggedIn() {
+      return !!localStorage.getItem(AUTH_KEY);
+    }
+
+    function requireAuth() {
+      if (!isLoggedIn()) {
+        window.location.href = 'login.html';
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem(AUTH_KEY);
+      window.location.href = 'login.html';
+    }
+
+    function groupByClass(students) {
+      return students.reduce((groups, student) => {
+        const cls = student.class || 'Unknown';
+        if (!groups[cls]) groups[cls] = [];
+        groups[cls].push(student);
+        return groups;
+      }, {});
+    }
+
+    let students = [];
+    let editingIndex = -1;
+
+    async function loadStudents() {
+      try {
+        const res = await fetch(API_BASE);
+        if (res.ok) {
+          students = await res.json();
+          return students;
+        }
+      } catch (e) {
+        console.warn('API not reachable, falling back to localStorage');
+      }
+      try {
+        const saved = localStorage.getItem('studentDatabase');
+        students = saved ? JSON.parse(saved) : [];
+      } catch (e) {
+        students = [];
+      }
+      return students;
+    }
+
+    async function renderClassWise() {
+      requireAuth();
+      const content = document.getElementById('content');
+      await loadStudents();
+      if (!students.length) {
+        content.innerHTML = '<div class="no-data">No student records found. Add students from the main page first.</div>';
+        return;
+      }
+
+      const groups = groupByClass(students);
+      const classNames = Object.keys(groups).sort((a, b) => {
+        const na = parseInt(a, 10);
+        const nb = parseInt(b, 10);
+        if (!isNaN(na) && !isNaN(nb)) return na - nb;
+        return a.localeCompare(b);
+      });
+
+      let globalIndex = 0;
+      content.innerHTML = classNames.map(cls => {
+        const items = groups[cls].map(student => {
+          const studentId = globalIndex++;
+          return `
+          <div class="student-row">
+            <div class="student-card" data-id="${studentId}">
+              <img class="student-avatar" src="${student.photo || ''}" alt="${escapeHtml(student.name)} photo" ${student.photo ? '' : 'style="display:none;"'}>
+              <span class="student-name" onclick="toggleStudentDetails(${studentId})">${student.name}</span>
+              <span>Roll: ${student.roll}</span>
+              <span>Section: ${student.section || 'N/A'}</span>
+            </div>
+            <div id="studentDetails-${studentId}" class="student-details">
+              <div><b>DOB:</b> ${formatDOB(student.dob)}</div>
+              <div><b>Class:</b> ${student.class || 'N/A'}</div>
+              <div><b>Father:</b> ${student.father || 'N/A'}</div>
+              <div><b>Mother:</b> ${student.mother || 'N/A'}</div>
+              <div><b>Mobile:</b> ${student.mobile || 'N/A'}</div>
+              <div><b>Address:</b> ${student.address || 'N/A'}</div>
+              <div class="student-actions">
+                <button type="button" class="edit" onclick="editStudent(event, ${studentId});">✏️ Edit</button>
+                <button type="button" class="delete" onclick="deleteStudent(event, ${studentId});">🗑️ Delete</button>
+              </div>
+            </div>
+          </div>`;
+        }).join('');
+
+        return `
+          <section class="class-section">
+            <h2>Class ${cls}</h2>
+            <div class="student-list">${items}</div>
+          </section>`;
+      }).join('');
+    }
+
+    function saveStudentsLocal(data) {
+      try {
+        localStorage.setItem('studentDatabase', JSON.stringify(data));
+      } catch (error) {
+        console.warn('Unable to save students to localStorage:', error);
+      }
+    }
+
+    function formatDOB(dateStr) {
+      if (!dateStr) return 'N/A';
+      const [year, month, day] = dateStr.split('-');
+      if (!year || !month || !day) return dateStr;
+      return `${day}/${month}/${year}`;
+    }
+
+    function toggleStudentDetails(index) {
+      const details = document.getElementById(`studentDetails-${index}`);
+      if (!details) return;
+
+      const isVisible = details.style.display === 'block';
+      document.querySelectorAll('.student-details').forEach(el => el.style.display = 'none');
+      document.querySelectorAll('.student-card').forEach(card => card.classList.remove('active'));
+
+      if (!isVisible) {
+        details.style.display = 'block';
+        const activeCard = document.querySelector(`.student-card[data-id="${index}"]`);
+        if (activeCard) activeCard.classList.add('active');
+      }
+    }
+
+    async function deleteStudent(event, index) {
+      event.stopPropagation();
+      if (!confirm('Are you sure you want to delete this student?')) return;
+      const roll = students[index].roll;
+      try {
+        const res = await fetch(`${API_BASE}/${encodeURIComponent(roll)}`, { method: 'DELETE' });
+        if (res.ok) {
+          students.splice(index, 1);
+          saveStudentsLocal(students);
+          renderClassWise();
+          return;
+        }
+      } catch (e) {
+        console.warn('Delete API failed, deleting locally');
+      }
+      students.splice(index, 1);
+      saveStudentsLocal(students);
+      renderClassWise();
+    }
+
+    function editStudent(event, index) {
+      event.stopPropagation();
+      editingIndex = index;
+      const details = document.getElementById(`studentDetails-${index}`);
+      if (!details) return;
+      const student = students[index];
+      details.innerHTML = `
+        <div class="edit-grid">
+          <div><label>Name:</label><input id="editName-${index}" type="text" value="${escapeHtml(student.name)}"></div>
+          <div><label>Roll:</label><input id="editRoll-${index}" type="text" value="${escapeHtml(student.roll)}"></div>
+          <div><label>Class:</label><input id="editClass-${index}" type="text" value="${escapeHtml(student.class)}"></div>
+          <div><label>Section:</label><input id="editSection-${index}" type="text" value="${escapeHtml(student.section)}"></div>
+          <div><label>DOB:</label><input id="editDob-${index}" type="date" value="${student.dob || ''}"></div>
+          <div><label>Father:</label><input id="editFather-${index}" type="text" value="${escapeHtml(student.father)}"></div>
+          <div><label>Mother:</label><input id="editMother-${index}" type="text" value="${escapeHtml(student.mother)}"></div>
+          <div><label>Mobile:</label><input id="editMobile-${index}" type="text" value="${escapeHtml(student.mobile)}"></div>
+        </div>
+        <div><label>Address:</label><textarea id="editAddress-${index}">${escapeHtml(student.address)}</textarea></div>
+        <div class="student-actions">
+          <button type="button" class="save" onclick="saveStudentEdits(${index}); event.stopPropagation()">Save</button>
+          <button type="button" class="cancel" onclick="cancelEdit(${index}); event.stopPropagation()">Cancel</button>
+        </div>
+      `;
+      details.style.display = 'block';
+      document.querySelectorAll('.student-card').forEach(card => card.classList.remove('active'));
+      const activeCard = document.querySelector(`.student-card[data-id="${index}"]`);
+      if (activeCard) activeCard.classList.add('active');
+    }
+
+    async function saveStudentEdits(index) {
+      const originalRoll = students[index].roll;
+      const updated = {
+        name: document.getElementById(`editName-${index}`).value.trim(),
+        roll: document.getElementById(`editRoll-${index}`).value.trim(),
+        class: document.getElementById(`editClass-${index}`).value.trim(),
+        section: document.getElementById(`editSection-${index}`).value.trim(),
+        dob: document.getElementById(`editDob-${index}`).value,
+        father: document.getElementById(`editFather-${index}`).value.trim(),
+        mother: document.getElementById(`editMother-${index}`).value.trim(),
+        mobile: document.getElementById(`editMobile-${index}`).value.trim(),
+        address: document.getElementById(`editAddress-${index}`).value.trim(),
+        photo: students[index].photo || ''
+      };
+      if (!updated.name || !updated.roll || !updated.class) {
+        alert('Name, Roll, and Class are required.');
+        return;
+      }
+      try {
+        const res = await fetch(`${API_BASE}/${encodeURIComponent(originalRoll)}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updated)
+        });
+        if (res.ok) {
+          students[index] = updated;
+          saveStudentsLocal(students);
+          renderClassWise();
+          return;
+        }
+      } catch (e) {
+        console.warn('Update API failed, updating locally');
+      }
+      students[index] = updated;
+      saveStudentsLocal(students);
+      renderClassWise();
+    }
+
+    function cancelEdit(index) {
+      renderClassWise();
+    }
+
+    function escapeHtml(text) {
+      return String(text || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
+    requireAuth();
+    renderClassWise();
+  </script>
+</body>
+</html>

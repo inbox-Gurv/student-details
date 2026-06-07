@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - Student Record System</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at top, rgba(30, 136, 229, 0.18), transparent 25%),
+                  radial-gradient(circle at bottom right, rgba(13, 71, 161, 0.16), transparent 18%),
+                  linear-gradient(180deg, #e9f2ff 0%, #f7fbff 100%);
+      padding: 20px;
+      animation: backgroundShift 10s ease infinite alternate;
+    }
+    .login-card {
+      width: 100%;
+      max-width: 420px;
+      background: rgba(255, 255, 255, 0.98);
+      border-radius: 28px;
+      padding: 36px;
+      box-shadow: 0 20px 45px rgba(13, 71, 161, 0.14);
+      border: 1px solid rgba(13, 71, 161, 0.12);
+      position: relative;
+      overflow: hidden;
+      animation: fadeInUp 0.8s ease both;
+    }
+    .login-card::before {
+      content: '';
+      position: absolute;
+      top: -40%;
+      left: -20%;
+      width: 180%;
+      height: 220%;
+      background: radial-gradient(circle, rgba(30, 136, 229, 0.14), transparent 45%);
+      filter: blur(40px);
+      pointer-events: none;
+    }
+    .login-card::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 260px;
+      height: 260px;
+      transform: translate(-50%, -50%) rotate(-10deg);
+      background-image: url('logo.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      opacity: 0.08;
+      pointer-events: none;
+      user-select: none;
+    }
+    .login-card h1 {
+      font-size: 2rem;
+      color: #0d47a1;
+      margin-bottom: 18px;
+      text-align: center;
+      letter-spacing: 0.03em;
+    }
+    .login-card p {
+      margin-bottom: 24px;
+      color: #163d63;
+      text-align: center;
+      line-height: 1.5;
+    }
+    .login-card label {
+      display: block;
+      margin-bottom: 6px;
+      color: #0d47a1;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    .login-card input {
+      width: 100%;
+      padding: 16px 18px;
+      border: 1px solid rgba(13, 71, 161, 0.2);
+      border-radius: 16px;
+      background: #f8fbff;
+      color: #163d63;
+      margin-bottom: 18px;
+      font-size: 1rem;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+    }
+    .login-card input:hover {
+      transform: translateY(-1px);
+    }
+    .login-card input:focus {
+      outline: none;
+      border-color: #1e88e5;
+      box-shadow: 0 0 0 6px rgba(30, 136, 229, 0.12);
+    }
+    .login-card button {
+      width: 100%;
+      padding: 16px 18px;
+      border: none;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #1e88e5, #1976d2);
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 12px 24px rgba(30, 136, 229, 0.18);
+      transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .login-card button:hover {
+      background: linear-gradient(135deg, #1565c0, #0d47a1);
+      transform: translateY(-2px);
+      box-shadow: 0 16px 28px rgba(30, 136, 229, 0.24);
+    }
+    .login-card button:active {
+      transform: translateY(0px);
+    }
+    .login-card a {
+      color: #1976d2;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.2s ease;
+    }
+    .login-card a:hover {
+      color: #0d47a1;
+    }
+    .hint {
+      margin-top: 16px;
+      color: #556;
+      font-size: 0.95rem;
+      text-align: center;
+    }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    @keyframes backgroundShift {
+      0% { background-position: 0% 0%; }
+      100% { background-position: 100% 100%; }
+    }
+    @media (max-width: 768px) {
+      body {
+        padding: 16px 12px 24px;
+      }
+      .login-card {
+        max-width: 100%;
+        padding: 26px;
+        border-radius: 24px;
+      }
+      .login-card::before {
+        top: -35%;
+        left: -10%;
+        width: 190%;
+        height: 210%;
+      }
+      .login-card::after {
+        width: 220px;
+        height: 220px;
+      }
+      .login-card h1 {
+        font-size: 1.9rem;
+        margin-bottom: 16px;
+      }
+      .login-card p {
+        margin-bottom: 22px;
+      }
+      .login-card input,
+      .login-card button {
+        padding: 15px 16px;
+      }
+    }
+    @media (max-width: 480px) {
+      body {
+        padding: 12px 10px 20px;
+      }
+      .login-card {
+        padding: 22px;
+        border-radius: 22px;
+      }
+      .login-card::after {
+        width: 180px;
+        height: 180px;
+        opacity: 0.06;
+      }
+      .login-card h1 {
+        font-size: 1.7rem;
+      }
+      .login-card input,
+      .login-card button {
+        padding: 14px 14px;
+      }
+      .login-card button {
+        font-size: 0.98rem;
+      }
+      .login-card a {
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-card">
+    <h1>Admin Login</h1>
+    <label for="username">Username</label>
+    <input id="username" type="text" placeholder="Enter username" />
+    <label for="password">Password</label>
+    <input id="password" type="password" placeholder="Enter password" />
+    <button onclick="loginUser()">Login</button>
+    <p style="text-align:center; margin-top: 10px;">
+      <a href="forgot.html" style="color:#1565c0; text-decoration:none;">Forgot password?</a>
+    </p>
+  </div>
+  <script>
+    const AUTH_KEY = 'studentAppAuth';
+
+    function isLoggedIn() {
+      return !!localStorage.getItem(AUTH_KEY);
+    }
+
+    function redirectIfAuthenticated() {
+      if (isLoggedIn()) {
+        window.location.href = 'index.html';
+      }
+    }
+
+    async function loginUser() {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+      if (!username || !password) {
+        alert('Username and password are required.');
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ username, password })
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          alert(errorData.error || 'Login failed');
+          return;
+        }
+
+        const result = await response.json();
+        localStorage.setItem(AUTH_KEY, JSON.stringify(result));
+        window.location.href = 'index.html';
+      } catch (err) {
+        alert('Unable to login. Please try again later.');
+        console.error(err);
+      }
+    }
+
+    redirectIfAuthenticated();
+  </script>
+</body>
+</html>

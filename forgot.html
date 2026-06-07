@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Forgot Password</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at top left, rgba(30, 136, 229, 0.18), transparent 22%),
+                  radial-gradient(circle at bottom right, rgba(13, 71, 161, 0.14), transparent 20%),
+                  linear-gradient(180deg, #e9f2ff 0%, #f7fbff 100%);
+      padding: 20px;
+      animation: pageGlide 10s ease infinite alternate;
+    }
+    .card {
+      width: 100%;
+      max-width: 500px;
+      background: rgba(255, 255, 255, 0.98);
+      border-radius: 30px;
+      padding: 38px;
+      box-shadow: 0 24px 60px rgba(13, 71, 161, 0.16);
+      border: 1px solid rgba(13, 71, 161, 0.1);
+      position: relative;
+      overflow: hidden;
+      animation: fadeInUp 0.8s ease both;
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      top: -30%;
+      left: 50%;
+      width: 420px;
+      height: 420px;
+      transform: translateX(-50%) rotate(15deg);
+      background-image: url('logo.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      opacity: 0.08;
+      pointer-events: none;
+    }
+    .card h1 {
+      font-size: 2rem;
+      color: #0d47a1;
+      margin-bottom: 18px;
+      text-align: center;
+      letter-spacing: 0.02em;
+    }
+    .card p {
+      margin-bottom: 24px;
+      color: #2a4f77;
+      text-align: center;
+      line-height: 1.6;
+    }
+    .card label {
+      display: block;
+      margin-bottom: 8px;
+      color: #0d47a1;
+      font-weight: 700;
+      font-size: 0.96rem;
+    }
+    .card input {
+      width: 100%;
+      padding: 16px 18px;
+      border: 1px solid rgba(13, 71, 161, 0.18);
+      border-radius: 16px;
+      background: #f7fbff;
+      color: #163d63;
+      margin-bottom: 18px;
+      font-size: 1rem;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+    }
+    .card input:hover {
+      transform: translateY(-1px);
+    }
+    .card input:focus {
+      outline: none;
+      border-color: #1e88e5;
+      box-shadow: 0 0 0 5px rgba(30, 136, 229, 0.12);
+    }
+    .card button {
+      width: 100%;
+      padding: 16px 18px;
+      border: none;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #1e88e5, #1976d2);
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 14px 28px rgba(30, 136, 229, 0.18);
+      transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card button:hover {
+      background: linear-gradient(135deg, #1565c0, #0d47a1);
+      transform: translateY(-2px);
+      box-shadow: 0 18px 32px rgba(30, 136, 229, 0.22);
+    }
+    .card button:active {
+      transform: translateY(0);
+    }
+    .card .hint {
+      margin-top: 14px;
+      color: #5d6f89;
+      font-size: 0.95rem;
+      text-align: center;
+    }
+    .card a {
+      display: block;
+      margin-top: 18px;
+      text-align: center;
+      color: #1e88e5;
+      text-decoration: none;
+      font-weight: 700;
+      transition: color 0.2s ease;
+    }
+    .card a:hover {
+      color: #0d47a1;
+    }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(28px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    @keyframes pageGlide {
+      0% { background-position: 0% 0%; }
+      100% { background-position: 100% 100%; }
+    }
+    @media (max-width: 768px) {
+      body {
+        padding: 16px 14px 24px;
+      }
+      .card {
+        max-width: 100%;
+        padding: 26px;
+        border-radius: 24px;
+        box-shadow: 0 18px 38px rgba(13, 71, 161, 0.12);
+      }
+      .card::before {
+        top: -28%;
+        width: 360px;
+        height: 360px;
+        opacity: 0.07;
+      }
+      .card h1 {
+        font-size: 1.85rem;
+        margin-bottom: 18px;
+      }
+      .card p {
+        margin-bottom: 22px;
+        font-size: 1rem;
+      }
+      .card label {
+        font-size: 0.94rem;
+      }
+      .card input,
+      .card button {
+        padding: 15px 16px;
+      }
+      .card button {
+        font-size: 0.99rem;
+      }
+      .card a {
+        margin-top: 16px;
+      }
+    }
+    @media (max-width: 480px) {
+      body {
+        padding: 12px 10px 20px;
+      }
+      .card {
+        padding: 22px;
+        border-radius: 22px;
+      }
+      .card::before {
+        top: -22%;
+        width: 280px;
+        height: 280px;
+        opacity: 0.05;
+      }
+      .card h1 {
+        font-size: 1.65rem;
+      }
+      .card p {
+        font-size: 0.95rem;
+      }
+      .card input,
+      .card button {
+        padding: 14px 14px;
+      }
+      .card button {
+        font-size: 0.97rem;
+      }
+      .card a {
+        margin-top: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Forgot Password</h1>
+    <p>Enter your username and recovery code to reset the password.</p>
+    <label for="username">Username</label>
+    <input id="username" type="text" placeholder="admin" />
+    <label for="recoveryCode">Recovery Code</label>
+    <input id="recoveryCode" type="text" placeholder="Enter recovery code" />
+    <label for="newPassword">New Password</label>
+    <input id="newPassword" type="password" placeholder="Enter new password" />
+    <label for="confirmPassword">Confirm Password</label>
+    <input id="confirmPassword" type="password" placeholder="Confirm new password" />
+    <button onclick="resetPassword()">Reset Password</button>
+    <a href="login.html">Back to Login</a>
+  </div>
+  <script>
+    async function resetPassword() {
+      const username = document.getElementById('username').value.trim();
+      const recoveryCode = document.getElementById('recoveryCode').value.trim();
+      const newPassword = document.getElementById('newPassword').value.trim();
+      const confirmPassword = document.getElementById('confirmPassword').value.trim();
+
+      if (!username || !recoveryCode || !newPassword || !confirmPassword) {
+        alert('All fields are required.');
+        return;
+      }
+      if (newPassword !== confirmPassword) {
+        alert('Passwords do not match.');
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/forgot-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, recoveryCode, newPassword })
+        });
+
+        const data = await response.json();
+        if (!response.ok) {
+          alert(data.error || 'Unable to reset password.');
+          return;
+        }
+
+        alert(data.message || 'Password reset successfully.');
+        window.location.href = 'login.html';
+      } catch (err) {
+        console.error(err);
+        alert('Unable to reset password. Please try again later.');
+      }
+    }
+  </script>
+</body>
+</html>
