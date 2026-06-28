@@ -9,17 +9,53 @@ app.use(express.json({ limit: '10mb' }));
 
 const DB_PATH = path.join(__dirname, 'db.json');
 
+const DEFAULT_DB = {
+  students: [],
+  auth: {
+    username: 'admin',
+    password: 'newpass123',
+    recoveryCode: 'studentreset'
+  }
+};
+
+function normalizeDb(data) {
+  const safeData = data && typeof data === 'object' && !Array.isArray(data) ? data : {};
+  return {
+    ...DEFAULT_DB,
+    ...safeData,
+    students: Array.isArray(safeData.students) ? safeData.students : [],
+    auth: {
+      ...DEFAULT_DB.auth,
+      ...(safeData.auth || {})
+    }
+  };
+}
+
+function parseDb(raw) {
+  const trimmed = raw.replace(/^\uFEFF/, '').trim();
+  if (!trimmed) return DEFAULT_DB;
+
+  const sanitized = trimmed
+    .replace(/\/\*[\s\S]*?\*\//g, '')
+    .replace(/^\s*\/\/.*$/gm, '')
+    .replace(/,\s*([}\]])/g, '$1');
+
+  return JSON.parse(sanitized);
+}
+
 function readDb() {
   try {
     const raw = fs.readFileSync(DB_PATH, 'utf8');
-    return JSON.parse(raw);
+    return normalizeDb(parseDb(raw));
   } catch (err) {
-    return { students: [] };
+    console.warn('Unable to read DB, using default state:', err.message);
+    return normalizeDb({});
   }
 }
 
 function writeDb(data) {
-  fs.writeFileSync(DB_PATH, JSON.stringify(data, null, 2));
+  const safeDb = normalizeDb(data);
+  fs.writeFileSync(DB_PATH, JSON.stringify(safeDb, null, 2));
 }
 
 app.get('/api/students', (req, res) => {
